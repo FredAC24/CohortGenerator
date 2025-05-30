@@ -68,7 +68,7 @@ addIndicationSubsetDefinition <- function(cohortDefinitionSet,
                                           subsetCohortNameTemplate = "@baseCohortName - @subsetDefinitionName",
                                           cohortCombinationOperator = "any",
                                           lookbackWindowStart = -99999,
-                                          loockbackWindowEnd = 0,
+                                          lookbackWindowEnd = 0,
                                           lookForwardWindowStart = 0,
                                           lookForwardWindowEnd = 99999,
                                           genderConceptIds = NULL,
@@ -80,16 +80,19 @@ addIndicationSubsetDefinition <- function(cohortDefinitionSet,
                                           requiredFollowUpTime = 1) {
 
   .cohortDefinitionSetHasRequiredColumns(cohortDefinitionSet)
-  checkmate::assertChoice(targetCohortIds, cohortDefinitionSet$cohortId)
-  checkmate::assertChoice(indicationCohortIds, cohortDefinitionSet$cohortId)
+  checkmate::assertSubset(targetCohortIds, cohortDefinitionSet$cohortId)
+  checkmate::assertSubset(indicationCohortIds, cohortDefinitionSet$cohortId)
 
+  
+  uniqueSubsetCriteria <- list(indicationId = indicationCohortIds)
+  
   subsetOperators <- list()
   subsetOperators[[length(subsetOperators) + 1]] <- createCohortSubset(
     cohortIds = uniqueSubsetCriteria$indicationId,
     negate = FALSE,
     cohortCombinationOperator = cohortCombinationOperator,
     windows = list(
-      createSubsetCohortWindow(lookbackWindowStart, loockbackWindowEnd, "cohortStart"),
+      createSubsetCohortWindow(lookbackWindowStart, lookbackWindowEnd, "cohortStart"),
       createSubsetCohortWindow(lookForwardWindowStart, lookForwardWindowEnd, "cohortStart")
     )
   )
