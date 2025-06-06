@@ -169,7 +169,7 @@ addRestrictionSubsetDefinition <- function(cohortDefinitionSet,
                                           requiredFollowUpTime = 1) {
 
   .cohortDefinitionSetHasRequiredColumns(cohortDefinitionSet)
-  checkmate::assertChoice(targetCohortIds, cohortDefinitionSet$cohortId)
+  checkmate::assertSubset(targetCohortIds, cohortDefinitionSet$cohortId)
 
   subsetOperators <- list()
   subsetOperators[[length(subsetOperators) + 1]] <- createLimitSubset(
